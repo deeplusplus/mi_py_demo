@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 
 def main(): 
     load_dotenv() 
+
+    # https://platform.openai.com/docs/api-reference/authentication
     client = OpenAI(
         organization=os.getenv("ORGANIZATION_ID"),
         api_key=os.getenv("SECRET_KEY"),
@@ -14,11 +16,12 @@ def main():
 
     interaction_type = ""
 
-    while interaction_type != "exit()":
+    while True:
         print("Chat?  Talk?  Exit?")
         interaction_type = input()
 
         if interaction_type.lower() == "chat":
+            # https://platform.openai.com/docs/api-reference/chat/create
             print("What would you like to chat?")
             chat_input = input()
 
@@ -33,14 +36,18 @@ def main():
             )
             print(chat_completion.choices[0].message.content)
         elif interaction_type.lower() == "talk":
-            print("One moment for talk, please.")
+            # https://platform.openai.com/docs/api-reference/audio/createSpeech
+            print("What would you like to hear?")
+            talk_input = input()
+            response = client.audio.speech.create(
+                model="tts-1",
+                voice="alloy",
+                input=talk_input)
+            response.write_to_file("example.mp3")
         elif interaction_type.lower() == "exit":
             sys.exit(0)
         else:
             print("Sorry I don't understand.")
-          
-        print("Chat?  Talk?  Exit?")
-        interaction_type = input()
 
 if __name__=="__main__": 
     main() 
