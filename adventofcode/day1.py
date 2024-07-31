@@ -1,12 +1,30 @@
+# Mapping of spelled-out digits to their numeric equivalents
+digit_map = {
+    "one": "1",
+    "two": "2",
+    "three": "3",
+    "four": "4",
+    "five": "5",
+    "six": "6",
+    "seven": "7",
+    "eight": "8",
+    "nine": "9"
+}
+
 def extract_calibration_value(line):
     first_digit = None
     last_digit = None
+    words = line.split()
     
-    for char in line:
-        if char.isdigit():
+    for word in words:
+        if word.isdigit():
             if first_digit is None:
-                first_digit = char
-            last_digit = char
+                first_digit = word
+            last_digit = word
+        elif word in digit_map:
+            if first_digit is None:
+                first_digit = digit_map[word]
+            last_digit = digit_map[word]
     
     if first_digit is not None and last_digit is not None:
         return int(first_digit + last_digit)
