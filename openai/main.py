@@ -17,7 +17,7 @@ def main():
     interaction_type = ""
 
     while True:
-        print("Chat?  Talk?  Exit?")
+        print("Chat?  Talk?  Draw? Exit?")
         interaction_type = input()
 
         if interaction_type.lower() == "chat":
@@ -44,6 +44,17 @@ def main():
                 voice="alloy",
                 input=talk_input)
             response.write_to_file("example.mp3")
+        elif interaction_type.lower() == "draw":
+            print("What would you like to draw?")
+            draw_input = input()
+
+            image = client.images.generate(
+                model="dall-e-3",
+                prompt=draw_input,
+                n=1,
+                size="1024x1024"
+            )
+            print(image.data[0].url)
         elif interaction_type.lower() == "exit":
             sys.exit(0)
         else:
